@@ -30,7 +30,12 @@ openclaw cron add --name "autonomous-tasks" --message "run autonomous tasks" --e
 **If current todos are empty**, check milestones:
 
 1. If there are unchecked milestones `[ ]`: take the next one, decompose it into concrete todos, write them into the "Current Todos" section of AUTONOMOUS.md, then continue
-2. If all milestones are done: prompt the user to set new goals and a new workspace path, give 2-3 example directions based on project context, then stop. Do not invent goals
+2. If all milestones are done: clean up for the next goal, then prompt the user and stop:
+   - Clear completed milestones from AUTONOMOUS.md
+   - Clear `memory/backlog.md`
+   - Clear `memory/tasks-log.md` (TASK ID restarts from 001)
+   - Prompt the user to set new goals and a new workspace path, give 2-3 example directions based on project context
+   - Do not invent goals
 
 ### 2. Generate Tasks
 
