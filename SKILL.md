@@ -2,7 +2,7 @@
 name: autonomous-tasks
 description: "自驱动 AI 员工。通过 cron 定时唤醒或手动触发，自动读取目标、生成任务、执行产出并记录日志。"
 metadata:
-  version: 5.3.0
+  version: 5.4.0
 ---
 
 # Autonomous Tasks
@@ -17,6 +17,7 @@ metadata:
 
 读取 `AUTONOMOUS.md`，了解长期目标和当前待办。
 读取 `memory/backlog.md`，了解后备想法。
+读取 `memory/tasks.md`，检查是否有上次未完成的任务。
 
 如果文件不存在，创建初始结构。
 
@@ -24,38 +25,60 @@ metadata:
 
 ### 2. 生成任务
 
-从待办中选取任务，拆分成合理粒度：
+**如果 `memory/tasks.md` 中有未完成任务**，直接继续执行，不重新生成。
 
+**如果没有未完成任务**，从待办中生成新任务，写入 `memory/tasks.md`：
+
+```markdown
+- [ ] TASK-XXX: 任务描述
+- [ ] TASK-XXX: 任务描述
+```
+
+TASK ID = tasks-log.md 最后一个 TASK 编号 + 1。如果两个文件都为空，从 TASK-001 开始。
+
+任务生成规则：
 - 优先做 `AUTONOMOUS.md` 当前待办，做完再看 `backlog.md`
-- 每个任务必须有明确的产出文件
-- 产出文件放在合理的位置，由你根据内容自行决定
+- 拆分成合理粒度，每个任务有明确产出
+- 产出文件位置由你根据内容自行决定
 
 ### 3. 执行任务
 
-逐一执行。如果某个任务失败：
+按 `memory/tasks.md` 中的顺序逐一执行。
 
-1. 在 `memory/tasks-log.md` 记录失败原因
-2. 跳过该任务，继续执行下一个
-3. 不要重试
+开始执行时，标记为进行中：
+```markdown
+- [~] TASK-XXX: 任务描述
+```
 
-### 4. 记录
+执行完成后，标记为已完成：
+```markdown
+- [x] TASK-XXX: 任务描述 → 产出路径
+```
 
-每完成（或失败）一个任务，追加一行到 `memory/tasks-log.md`：
+如果执行失败，标记并跳过：
+```markdown
+- [!] TASK-XXX: 任务描述 → 失败原因
+```
 
+不要重试失败的任务。
+
+### 4. 归档
+
+当 `memory/tasks.md` 中所有任务都标记完成（`[x]` 或 `[!]`）后：
+
+1. 将结果追加到 `memory/tasks-log.md`：
 ```
 - ✅ TASK-XXX: 描述 → 产出路径 (YYYY-MM-DD)
 - ❌ TASK-XXX: 描述 → 失败原因 (YYYY-MM-DD)
 ```
 
-TASK ID = tasks-log.md 最后一个 TASK 编号 + 1。如果文件为空，从 TASK-001 开始。
-
-同时从 `AUTONOMOUS.md` 或 `backlog.md` 中删除已完成的条目。
-
-**日志清理**：当 tasks-log.md 超过 50 行时，只保留最近 30 行。
+2. 清空 `memory/tasks.md`（保留标题）
+3. 从 `AUTONOMOUS.md` 或 `backlog.md` 中删除已完成的条目
+4. 当 `tasks-log.md` 超过 50 行时，只保留最近 30 行
 
 ### 5. 停止
 
-本轮任务全部完成后，**立即停止**。不要生成新任务，不要循环。等待下次唤醒。
+归档完成后，**立即停止**。不要生成新任务，不要循环。等待下次唤醒。
 
 ## 禁止事项
 
@@ -71,7 +94,7 @@ TASK ID = tasks-log.md 最后一个 TASK 编号 + 1。如果文件为空，从 T
 1. **目标驱动** — 一切围绕 AUTONOMOUS.md 中的目标
 2. **MVP 心态** — 快速产出，不过度工程化
 3. **单轮执行** — 每次唤醒只执行一轮，然后停止
-4. **失败跳过** — 记录失败，继续下一个，不重试
+4. **可恢复** — 中断后重新唤醒，能从 tasks.md 继续
 
 ## 文件结构
 
@@ -81,6 +104,7 @@ autonomous-tasks/
 ├── _meta.json            # 元数据（不可修改）
 ├── AUTONOMOUS.md         # 长期目标 + 当前待办
 └── memory/
-    ├── tasks-log.md      # 完成日志 (append-only, 最多 50 行)
+    ├── tasks.md          # 当前任务列表（执行中状态）
+    ├── tasks-log.md      # 完成历史（append-only, 最多 50 行）
     └── backlog.md        # 待办想法池
 ```
