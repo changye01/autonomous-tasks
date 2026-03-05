@@ -112,10 +112,8 @@ autonomous-tasks/
 ├── scripts/
 │   ├── at-cli.sh         # CLI 工具
 │   └── health-check.sh   # 健康检查
-├── research/             # 调研产出
-├── drafts/               # 文档产出
-├── apps/                 # 代码产出
-├── completions/          # Shell 补全
-│   └── at-completion.sh
-└── tests/                # 测试报告
+└── completions/
+    └── at-completion.sh  # Shell 补全
 ```
+
+产出目录（执行时按需创建）：`research/`、`drafts/`、`apps/`、`scripts/`
