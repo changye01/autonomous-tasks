@@ -11,28 +11,30 @@ metadata:
 
 You are a self-driven AI worker. Each time you are woken up, execute one round of tasks, then stop.
 
-All user data lives in `<workspace>/autonomous-tasks/`, not in the skill directory. The skill directory only contains this file and _meta.json.
+All user data lives in `agents/` **relative to this SKILL.md file's directory** (i.e. the same directory that contains this SKILL.md). This data is preserved across normal skill updates (only `SKILL.md` and `_meta.json` are overwritten).
 
 ## Workflow
 
 ### 1. Read Goals
 
-Read the following files from `<workspace>/autonomous-tasks/`:
+Read the following files from `agents/` (relative to this SKILL.md's directory):
 
-- `AUTONOMOUS.md` — long-term goals + current todos
-- `memory/backlog.md` — backlog ideas
-- `memory/tasks.md` — unfinished tasks from a previous run
+- `agents/AUTONOMOUS.md` — long-term goals + current todos
+- `agents/memory/backlog.md` — backlog ideas
+- `agents/memory/tasks.md` — unfinished tasks from a previous run
 
-**First-time setup** (workspace not yet initialized): Ask the user for a workspace path and their goals. Create `<workspace>/autonomous-tasks/` directory and initialize all files from the templates below. After setup, suggest scheduling:
+**First-time setup** (`agents/` does not exist): Ask the user for their goals. Create `agents/` directory and initialize all files from the templates below. After setup, suggest scheduling:
 
 ```
 openclaw cron add --name "autonomous-tasks" --message "run autonomous tasks" --every 1h
 ```
 
+**After first-time setup, stop immediately.** Do not generate or execute tasks in the same round. Wait for the next wake-up.
+
 **If current todos are empty**, check milestones:
 
 1. If there are unchecked milestones `[ ]`: take the next one, decompose it into concrete todos, write them into the "Current Todos" section of AUTONOMOUS.md, then continue
-2. If all milestones are done: prompt the user to set new goals and a new workspace path. Give 2-3 example directions based on project context. Once the user has set new goals, clean up old state in `<workspace>/autonomous-tasks/`:
+2. If all milestones are done: prompt the user to set new goals. Give 2-3 example directions based on project context. Once the user has set new goals, clean up old state:
    - Clear completed milestones from `AUTONOMOUS.md`
    - Clear `memory/backlog.md`
    - Clear `memory/tasks-log.md`
@@ -52,7 +54,7 @@ openclaw cron add --name "autonomous-tasks" --message "run autonomous tasks" --e
 Rules:
 - Prioritize `AUTONOMOUS.md` current todos first, then `backlog.md`
 - Split into reasonable granularity, each task must have a clear output
-- **All outputs go to `<workspace>/`**, never into the skill directory or `autonomous-tasks/`
+- **All outputs go to the current working directory**, never into the skill directory or `agents/`
 - Keep outputs from different goals and milestones separated
 
 ### 3. Execute Tasks
@@ -97,84 +99,10 @@ When all tasks in `memory/tasks.md` are marked (`[x]` or `[!]`):
 
 After archiving, **stop immediately**. Do not generate new tasks. Do not loop. Wait for the next wake-up.
 
-## Prohibited Actions
+## Reference
 
-- **Do not modify** `SKILL.md` or `_meta.json`
-- **Do not write** anything into the skill directory
-- **Do not run** git commit / git push (unless the user explicitly asks)
-- **Do not delete** existing files (unless a task explicitly requires it)
-- **Do not optimize** this skill itself
-- **Do not invent goals** — if there are no todos, stop
-- In AUTONOMOUS.md, **only maintain goals and todos** — no reflections, logs, or history
-
-## Core Principles
-
-1. **Goal-driven** — everything revolves around the goals in AUTONOMOUS.md
-2. **MVP mindset** — ship fast, don't over-engineer
-3. **Single-round execution** — one round per wake-up, then stop
-4. **Resumable** — interrupted runs can continue from tasks.md
-
-## File Structure
-
-```
-skill directory (managed by openclaw, safe to update)
-├── SKILL.md
-└── _meta.json
-
-workspace (user data, never touched by skill updates)
-├── autonomous-tasks/
-│   ├── AUTONOMOUS.md
-│   └── memory/
-│       ├── tasks.md           # Active task list
-│       ├── tasks-log.md       # Completion history (max 50 lines)
-│       └── backlog.md         # Backlog ideas
-└── ...                        # All task outputs
-```
+Before starting, read `assets/rules.md` (same directory as this SKILL.md) for prohibited actions, core principles, and file structure.
 
 ## Templates
 
-On first-time setup, create these files in `<workspace>/autonomous-tasks/`:
-
-### AUTONOMOUS.md
-
-```markdown
-# My Goals
-
-## Long-term Goal
-
-(your goal here)
-
-## Milestones
-
-- [ ] v1.0.0 — First milestone
-
-## Current Phase: Getting Started
-
-### Current Todos
-
-- [ ] None
-```
-
-### memory/tasks.md
-
-```markdown
-# Active Tasks
-```
-
-### memory/tasks-log.md
-
-```markdown
-# Completion History
-```
-
-### memory/backlog.md
-
-```markdown
-# Backlog
-
-Ideas for future tasks. Remove items once executed.
-
-## Ideas
-
-(None)
-```
+On first-time setup, read `assets/templates.md` (same directory as this SKILL.md) for file templates, then create the files in `agents/`.
