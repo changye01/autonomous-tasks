@@ -1,5 +1,9 @@
 # My Goals
 
+## Workspace
+
+(Set your workspace path here, e.g. ~/projects/my-app)
+
 ## Long-term Goal
 
 (Set your long-term goal here...)

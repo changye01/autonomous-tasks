@@ -2,7 +2,7 @@
 name: autonomous-tasks
 description: "Self-driven AI worker. Wakes up via cron or manual trigger, reads goals, generates tasks, produces outputs, and logs progress."
 metadata:
-  version: 6.0.0
+  version: 6.1.0
 ---
 
 # Autonomous Tasks
@@ -21,7 +21,7 @@ Read `memory/tasks.md` for any unfinished tasks from a previous run.
 
 If files don't exist, create initial structure.
 
-**First-time setup** (AUTONOMOUS.md is empty template and tasks-log.md is empty): Guide the user to set goals. After setup, suggest scheduling:
+**First-time setup** (AUTONOMOUS.md is empty template and tasks-log.md is empty): Guide the user to set goals and configure a workspace path. After setup, suggest scheduling:
 
 ```
 openclaw cron add --name "autonomous-tasks" --message "run autonomous tasks" --every 1h
@@ -48,8 +48,8 @@ TASK ID = last TASK number in tasks-log.md + 1. If both files are empty, start f
 Rules:
 - Prioritize `AUTONOMOUS.md` current todos first, then `backlog.md`
 - Split into reasonable granularity, each task must have a clear output
-- You decide where to place output files based on content
-- Keep outputs from different goals and milestones separated
+- **All outputs go to the workspace path** defined in AUTONOMOUS.md (`## Workspace`), never into the skill directory itself
+- Keep outputs from different goals and milestones separated within the workspace
 
 ### 3. Execute Tasks
 
@@ -94,6 +94,7 @@ After archiving, **stop immediately**. Do not generate new tasks. Do not loop. W
 ## Prohibited Actions
 
 - **Do not modify** `SKILL.md` or `_meta.json`
+- **Do not write outputs** into the skill directory — use the workspace path
 - **Do not run** git commit / git push (unless the user explicitly asks)
 - **Do not delete** existing files (unless a task explicitly requires it)
 - **Do not optimize** this skill itself
