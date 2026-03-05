@@ -78,6 +78,8 @@ If execution fails, mark and skip:
 
 Do not retry failed tasks.
 
+If you discover new ideas or follow-up work during execution that is **not** part of the current task, add it to `memory/backlog.md` instead of acting on it immediately.
+
 ### 4. Archive
 
 When all tasks in `memory/tasks.md` are marked (`[x]` or `[!]`):
