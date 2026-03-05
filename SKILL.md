@@ -111,18 +111,11 @@ autonomous-tasks/
 │   └── changelog.md      # 版本变更日志
 ├── scripts/
 │   ├── at-cli.sh         # CLI 工具
-│   ├── health-check.sh   # 健康检查
-│   └── release.sh        # 发布脚本
+│   └── health-check.sh   # 健康检查
 ├── research/             # 调研产出
 ├── drafts/               # 文档产出
 ├── apps/                 # 代码产出
 ├── completions/          # Shell 补全
 │   └── at-completion.sh
 └── tests/                # 测试报告
-```
-
-## 发布
-
-```bash
-bash scripts/release.sh [版本号]
 ```
