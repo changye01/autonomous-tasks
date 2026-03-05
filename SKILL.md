@@ -33,7 +33,7 @@ openclaw cron add --name "autonomous-tasks" --message "run autonomous tasks" --e
 2. If all milestones are done: prompt the user to set new goals and a new workspace path, give 2-3 example directions based on project context. Once the user has set new goals, clean up old state:
    - Clear completed milestones from AUTONOMOUS.md
    - Clear `memory/backlog.md`
-   - Clear `memory/tasks-log.md` (TASK ID restarts from 001)
+   - Clear `memory/tasks-log.md`
    - Do not invent goals. If the user doesn't respond, stop and wait
 
 ### 2. Generate Tasks
@@ -43,11 +43,9 @@ openclaw cron add --name "autonomous-tasks" --message "run autonomous tasks" --e
 **If no unfinished tasks**, generate new tasks from todos and write to `memory/tasks.md`:
 
 ```markdown
-- [ ] TASK-XXX: task description
-- [ ] TASK-XXX: task description
+- [ ] task description
+- [ ] task description
 ```
-
-TASK ID = last TASK number in tasks-log.md + 1. If both files are empty, start from TASK-001.
 
 Before generating tasks, check the `## Workspace` path in AUTONOMOUS.md:
 - If not configured: prompt the user to set it, then stop
@@ -65,17 +63,17 @@ Execute tasks in order from `memory/tasks.md`.
 
 Mark as in progress:
 ```markdown
-- [~] TASK-XXX: task description
+- [~] task description
 ```
 
 Mark as done:
 ```markdown
-- [x] TASK-XXX: task description → output path
+- [x] task description → output path
 ```
 
 If execution fails, mark and skip:
 ```markdown
-- [!] TASK-XXX: task description → failure reason
+- [!] task description → failure reason
 ```
 
 Do not retry failed tasks.
@@ -86,8 +84,8 @@ When all tasks in `memory/tasks.md` are marked (`[x]` or `[!]`):
 
 1. Append results to `memory/tasks-log.md`:
 ```
-- ✅ TASK-XXX: description → output path (YYYY-MM-DD)
-- ❌ TASK-XXX: description → failure reason (YYYY-MM-DD)
+- ✅ description → output path (YYYY-MM-DD)
+- ❌ description → failure reason (YYYY-MM-DD)
 ```
 
 2. Clear `memory/tasks.md` (keep the heading)
