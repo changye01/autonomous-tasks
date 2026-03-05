@@ -1,8 +1,8 @@
 ---
-name: autonomous-tasks
+name: self-drive
 description: "Self-driven AI worker. Wakes up via cron or manual trigger, reads goals, generates tasks, produces outputs, and logs progress."
 metadata:
-  version: 10.0.0
+  version: 1.0.0
 ---
 
 # Autonomous Tasks
