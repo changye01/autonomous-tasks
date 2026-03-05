@@ -105,15 +105,10 @@ autonomous-tasks/
 ├── SKILL.md              # 本文件 — 工作流指令
 ├── _meta.json            # ClawHub 元数据
 ├── AUTONOMOUS.md         # 长期目标 + 当前阶段
-├── memory/
-│   ├── tasks-log.md      # 完成日志 (append-only)
-│   ├── backlog.md        # 待办想法池
-│   └── changelog.md      # 版本变更日志
-├── scripts/
-│   ├── at-cli.sh         # CLI 工具
-│   └── health-check.sh   # 健康检查
-└── completions/
-    └── at-completion.sh  # Shell 补全
+└── memory/
+    ├── tasks-log.md      # 完成日志 (append-only)
+    ├── backlog.md        # 待办想法池
+    └── changelog.md      # 版本变更日志
 ```
 
 产出目录（执行时按需创建）：`research/`、`drafts/`、`apps/`、`scripts/`
