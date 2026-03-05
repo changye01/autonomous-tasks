@@ -45,10 +45,14 @@ openclaw cron add --name "autonomous-tasks" --message "run autonomous tasks" --e
 
 TASK ID = last TASK number in tasks-log.md + 1. If both files are empty, start from TASK-001.
 
+Before generating tasks, check the `## Workspace` path in AUTONOMOUS.md:
+- If not configured: prompt the user to set it, then stop
+- If the directory doesn't exist: create it
+
 Rules:
 - Prioritize `AUTONOMOUS.md` current todos first, then `backlog.md`
 - Split into reasonable granularity, each task must have a clear output
-- **All outputs go to the workspace path** defined in AUTONOMOUS.md (`## Workspace`), never into the skill directory itself
+- **All outputs go to the workspace path**, never into the skill directory itself
 - Keep outputs from different goals and milestones separated within the workspace
 
 ### 3. Execute Tasks
@@ -111,12 +115,15 @@ After archiving, **stop immediately**. Do not generate new tasks. Do not loop. W
 ## File Structure
 
 ```
-autonomous-tasks/
-├── SKILL.md              # Workflow instructions (read-only)
-├── _meta.json            # Metadata (read-only)
-├── AUTONOMOUS.md         # Long-term goals + current todos
+autonomous-tasks/              # Skill directory (managed by openclaw)
+├── SKILL.md                   # Workflow instructions (read-only)
+├── _meta.json                 # Metadata (read-only)
+├── AUTONOMOUS.md              # Goals, milestones, workspace path
 └── memory/
-    ├── tasks.md          # Active task list (in-progress state)
-    ├── tasks-log.md      # Completion history (append-only, max 50 lines)
-    └── backlog.md        # Backlog ideas
+    ├── tasks.md               # Active task list
+    ├── tasks-log.md           # Completion history (max 50 lines)
+    └── backlog.md             # Backlog ideas
+
+~/projects/my-app/             # Workspace (all outputs go here)
+└── ...
 ```
