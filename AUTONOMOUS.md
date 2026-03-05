@@ -1,15 +1,15 @@
-# 我的目标
+# My Goals
 
-## 长期目标
+## Long-term Goal
 
-（填写你的长期目标...）
+(Set your long-term goal here...)
 
-## 里程碑
+## Milestones
 
-- [ ] v1.0.0 — 第一个里程碑
+- [ ] v1.0.0 — First milestone
 
-## 当前阶段：起步
+## Current Phase: Getting Started
 
-### 当前待办
+### Current Todos
 
-- [ ] 暂无
+- [ ] None

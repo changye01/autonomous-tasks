@@ -1,11 +1,7 @@
-# 待办任务想法池
+# Backlog
 
-本文件累积各种任务想法，任务执行后移除。
+Ideas for future tasks. Remove items once executed.
 
-## 待评估任务想法
+## Ideas
 
-（暂无）
-
----
-
-## 已提取待执行
+(None)
