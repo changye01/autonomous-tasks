@@ -23,7 +23,7 @@ Read the following files from `agents/` (relative to this SKILL.md's directory):
 - `agents/memory/backlog.md` — backlog ideas
 - `agents/memory/tasks.md` — unfinished tasks from a previous run
 
-**First-time setup** (`agents/` does not exist): Ask the user for their goals. Create `agents/` directory and initialize all files from the templates below. After setup, suggest scheduling:
+**First-time setup** (`agents/` does not exist): Ask the user for their goals. Create `agents/` directory and initialize all files from the templates below. After setup, **strongly recommend** the user to set up scheduled execution:
 
 ```
 openclaw cron add --name "autonomous-tasks" --message "run autonomous tasks" --every 1h
