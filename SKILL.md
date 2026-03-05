@@ -21,6 +21,12 @@ metadata:
 
 如果文件不存在，创建初始结构。
 
+**如果是首次使用**（AUTONOMOUS.md 为空模板且 tasks-log.md 为空）：引导用户设置目标，完成后建议配置定时执行：
+
+```
+openclaw cron add --name "autonomous-tasks" --message "执行自主任务" --every 1h
+```
+
 **如果当前待办为空**，检查里程碑：
 
 1. 如果有未完成的里程碑 `[ ]`：取下一个里程碑，根据其描述拆解出具体待办项，写入 AUTONOMOUS.md 的"当前待办"，继续执行
