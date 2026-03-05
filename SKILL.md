@@ -2,7 +2,7 @@
 name: autonomous-tasks
 description: "Self-driven AI worker. Reads goals, generates tasks, executes, and logs progress. Keywords: create goal, new goal, set goal, run goals, 创建目标, 新目标, 设定目标, 执行目标."
 metadata:
-  version: 10.1.2
+  version: 10.2.0
 ---
 
 # Autonomous Tasks
@@ -11,19 +11,19 @@ metadata:
 
 You are a self-driven AI worker. Each time you are woken up, execute one round of tasks, then stop.
 
-All user data lives in the **workspace directory**, not in the skill directory. The skill directory only contains this file and _meta.json.
+All user data lives in `<workspace>/autonomous-tasks/`, not in the skill directory. The skill directory only contains this file and _meta.json.
 
 ## Workflow
 
 ### 1. Read Goals
 
-Read the following files from the workspace:
+Read the following files from `<workspace>/autonomous-tasks/`:
 
 - `AUTONOMOUS.md` — long-term goals + current todos
 - `memory/backlog.md` — backlog ideas
 - `memory/tasks.md` — unfinished tasks from a previous run
 
-**First-time setup** (workspace not yet initialized): Ask the user for a workspace path and their goals. Create the workspace directory and initialize all files from the templates below. After setup, suggest scheduling:
+**First-time setup** (workspace not yet initialized): Ask the user for a workspace path and their goals. Create `<workspace>/autonomous-tasks/` directory and initialize all files from the templates below. After setup, suggest scheduling:
 
 ```
 openclaw cron add --name "autonomous-tasks" --message "run autonomous tasks" --every 1h
@@ -32,8 +32,8 @@ openclaw cron add --name "autonomous-tasks" --message "run autonomous tasks" --e
 **If current todos are empty**, check milestones:
 
 1. If there are unchecked milestones `[ ]`: take the next one, decompose it into concrete todos, write them into the "Current Todos" section of AUTONOMOUS.md, then continue
-2. If all milestones are done: prompt the user to set new goals and a new workspace path. Give 2-3 example directions based on project context. Once the user has set new goals, clean up old state:
-   - Clear completed milestones from AUTONOMOUS.md
+2. If all milestones are done: prompt the user to set new goals and a new workspace path. Give 2-3 example directions based on project context. Once the user has set new goals, clean up old state in `<workspace>/autonomous-tasks/`:
+   - Clear completed milestones from `AUTONOMOUS.md`
    - Clear `memory/backlog.md`
    - Clear `memory/tasks-log.md`
    - Do not invent goals. If the user doesn't respond, stop and wait
@@ -52,7 +52,7 @@ openclaw cron add --name "autonomous-tasks" --message "run autonomous tasks" --e
 Rules:
 - Prioritize `AUTONOMOUS.md` current todos first, then `backlog.md`
 - Split into reasonable granularity, each task must have a clear output
-- **All outputs go to the workspace**, never into the skill directory
+- **All outputs go to `<workspace>/`**, never into the skill directory or `autonomous-tasks/`
 - Keep outputs from different goals and milestones separated
 
 ### 3. Execute Tasks
@@ -122,17 +122,18 @@ skill directory (managed by openclaw, safe to update)
 └── _meta.json
 
 workspace (user data, never touched by skill updates)
-├── AUTONOMOUS.md
-├── memory/
-│   ├── tasks.md           # Active task list
-│   ├── tasks-log.md       # Completion history (max 50 lines)
-│   └── backlog.md         # Backlog ideas
-└── ...                    # All task outputs
+├── autonomous-tasks/
+│   ├── AUTONOMOUS.md
+│   └── memory/
+│       ├── tasks.md           # Active task list
+│       ├── tasks-log.md       # Completion history (max 50 lines)
+│       └── backlog.md         # Backlog ideas
+└── ...                        # All task outputs
 ```
 
 ## Templates
 
-On first-time setup, create these files in the workspace:
+On first-time setup, create these files in `<workspace>/autonomous-tasks/`:
 
 ### AUTONOMOUS.md
 
