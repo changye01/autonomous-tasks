@@ -1,8 +1,8 @@
 ---
 name: autonomous-tasks
-description: "Self-driven AI worker. Autonomous task execution triggered by cron or manual wake-up. Reads goals, generates tasks, executes, logs progress, and stops. Keywords: autonomous tasks, auto goal, self-drive, run goals, execute backlog, scheduled tasks, cron job."
+description: "Self-driven AI worker. Reads goals, generates tasks, executes, and logs progress. Keywords: create goal, new goal, set goal, run goals, 创建目标, 新目标, 设定目标, 执行目标."
 metadata:
-  version: 10.1.1
+  version: 10.1.2
 ---
 
 # Autonomous Tasks
